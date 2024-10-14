@@ -63,3 +63,39 @@ const tshirts = [
     quantity: 1
   }
 ]
+import React, { useState } from 'react';
+
+const TShirt = ({ title, image, price, stock }) => {
+  const [quantity, setQuantity] = useState(1);
+  const [currentStock, setCurrentStock] = useState(stock);
+
+  const handleBuy = () => {
+    setCurrentStock(currentStock - quantity);
+  };
+
+  return (
+    <div className="tshirt">
+      <h2>{title}</h2>
+      <img src={image} alt={title} />
+      <p>Price: ${price}</p>
+      {currentStock > 0 ? (
+        <>
+          <p>Stock: {currentStock}</p>
+          <label>
+            Quantity:
+            <select value={quantity} onChange={e => setQuantity(Number(e.target.value))}>
+              {[...Array(currentStock).keys()].map(i => (
+                <option key={i + 1} value={i + 1}>
+                  {i + 1}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button onClick={handleBuy}>Buy</button>
+        </>
+      ) : (
+        <p>Out of Stock</p>
+      )}
+    </div>
+  );
+};
